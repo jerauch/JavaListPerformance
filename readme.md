@@ -1,8 +1,8 @@
 # Les List en java et leur performance
 
-Dans cet article nous allons revenir aux base du language Java. J'ai passé plusieurs entretiens d'embauches techniques et j'ai été très étonné quand on m'a posé des questions sur les bases du language, et plus préciséement sur le package Collection, les List et les implémentations.
+Dans cet article nous allons revenir aux base du langage Java. J'ai passé plusieurs entretiens d'embauches techniques et j'ai été très étonné quand on m'a posé des questions sur les bases du langage, et plus précisément sur le package Collection, les List et les implémentations.
 
-Qu'est ce qu'une List ? Voyons la définission de la javadoc :
+Qu'est ce qu'une List ? Voyons la définition de la javadoc :
 
 *An ordered collection (also known as a sequence). The user of this interface has precise control over where in the list each element is inserted. The user can access elements by their integer index (position in the list), and search for elements in the list.
 Unlike sets, lists typically allow duplicate elements.*
@@ -32,9 +32,11 @@ Nous allons ajouter 10000 éléments dans chacune de nos 4 implémentations de l
 
 Voilà les résultats :
 
+![alt text](img/1.png)
+
 On constate que les performances sont assez identiques pour les implémentations Vector, ArrayList et LinkedList. L'implémentation Vector est synchronisée et threadsafe alors que les deux autres implémentations ne le sont pas, ce qui explique un léger impact sur les performances.
 
-CopyOnWriteArrayList a des performances catastrophiques, comme on pouvrait s'y attendre, cela s'explique par son implémentation :
+CopyOnWriteArrayList a des performances catastrophiques, comme on peut s'y attendre, cela s'explique par son implémentation :
 
 *A thread-safe variant of ArrayList in which all mutative operations (add, set, and so on) are implemented by making a fresh copy of the underlying array.*
 
@@ -53,6 +55,8 @@ Voyons comment se comportent nos implémentations pour récupérer les élément
 	}
 ```
 
+![alt text](img/2.png)
+
 Ici nous voyons que l'implémentation la plus lente est la LinkedList, ce qui est assez logique : Pour les 3 autres implémentations, les données sont stockées sous forme de tableau et il est donc possible d'accéder directement à l'élément. Pour une LinkedList, chaque élément est lié à l'élément précédant et suivant, si on veut accedéer à l'élément 50 de la liste, on devra parcourir les 49 premiers éléments... 
 
 Conclusion :
@@ -64,11 +68,21 @@ Conclusion :
 
 Dans ce test nous allons voir les performances du calcul de la taille de la List :
 
-Ici rien à dire, les temps sont négligeables.
+```java
+	for(int i = 0; i < 10000; i++) {
+		liste.size(Random(0, TAILLE_LISTE));	
+	}
+```
+
+![alt text](img/3.png)
+
+Ici rien à dire les temps sont négligeables, bien que la représentation graphique puisse nous faire penser le contraire les temps sont négligeables.
 
 ## Iterator
 
 Et si on parcours tous les éléments de la List ?
+
+![alt text](img/4.png)
 
 Idem, les temps sont sensiblement identiques.
 
@@ -98,6 +112,7 @@ Vector(int initialCapacity, int capacityIncrement)
 
 La vraie conclusion de cet article : 
 
+![alt text](img/5.png)
 
 
 
